@@ -55,7 +55,7 @@ void smash_clusterize(){
     f1.close();
     
     BunchOfParticles bunch(nucleons);
-    bunch.Clusterize(5.5, "HClust_Single", 0.35, "HClust_Complete", 0);
+    bunch.Clusterize(5.5, "HClust_Single", 0.35, "HClust_Complete");
     map<int,vector<SingleParticle>> map_of_labels = bunch.GetLabelsMap();
     vector<int> labels = bunch.GetLabelsVector();
     cout << "Num. of clusters: " << map_of_labels.size() << endl;    
