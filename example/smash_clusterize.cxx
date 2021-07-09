@@ -62,7 +62,8 @@ void smash_clusterize(){
     
     TCanvas *cvs = new TCanvas("cvs", "", 800, 600);
     gStyle->SetCanvasColor(0);
-    gStyle->SetMarkerStyle(8);
+    //gStyle->SetMarkerStyle(20);
+    //gStyle->SetMarkerSize(7);
     int colors[] = {2,3,4,5,6,7, kPink,kMagenta+3, kAzure-3,kOrange+7,kCyan-3, 
         kPink-6,kSpring-1, kViolet+3,kBlue+4, kGreen+3,kPink-7 }; 
     
@@ -71,6 +72,7 @@ void smash_clusterize(){
         not_nucl->Fill(not_nucleons.at(i).X, not_nucleons.at(i).Y, not_nucleons.at(i).Z);
     }
     not_nucl->SetMarkerColor(kGray);
+    not_nucl->SetMarkerStyle(4);
     not_nucl->Draw("x:y:z");    
        
     for (const auto& [labl, parts]:map_of_labels){
@@ -78,6 +80,7 @@ void smash_clusterize(){
              TNtuple *prot_and_neut = new TNtuple("n", "n", "x:y:z");
              prot_and_neut->Fill(parts.at(0).X, parts.at(0).Y, parts.at(0).Z);
              prot_and_neut->SetMarkerColor(43);
+             prot_and_neut->SetMarkerStyle(4);
              prot_and_neut->Draw("x:y:z","","same");
         } else {
             int color = colors[parts.size()];
@@ -85,6 +88,7 @@ void smash_clusterize(){
             for (const auto& p:parts){
                 nucl->Fill(p.X, p.Y, p.Z);
             }
+            nucl->SetMarkerStyle(8);
             nucl->SetMarkerColor(color);
             nucl->Draw("x:y:z","","same");            
         }
