@@ -21,6 +21,19 @@ T ScalarProduct(const std::vector<T>& x, const std::vector<T>& y){
     return result;        
 }
 
+template <typename T>
+T AbsValue(const std::vector<T>& x){
+	if (x.size() == 0 ){
+        std::cerr << "AbsValue: Vector has zero length\n";
+		throw ;
+        return (double)NULL;
+	}
+    T result = 0;
+    for (size_t i = 0; i < x.size(); i++)
+        result += x.at(i)*x.at(i);
+    return result;        
+}
+
 template<typename T1, typename T2>
 std::vector<T2> operator * (const T1& a, const std::vector<T2>& x){
 	std::vector<T2> result(x.size());

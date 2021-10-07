@@ -46,7 +46,7 @@ void smash_clusterize(){
         int pdg; ss >> pdg;
         int ID; ss >> ID; 
         int charge; ss >> charge;
-        SingleParticle particle = {ID, x,y,z,  px/p0, py/p0, pz/p0};
+        SingleParticle particle = {ID, x,y,z,  px,py,pz,p0};
         if (pdg == 2212 || pdg == 2112)
             nucleons.push_back(particle);
         else
@@ -55,7 +55,7 @@ void smash_clusterize(){
     f1.close();
     
     BunchOfParticles bunch(nucleons);
-    bunch.Clusterize(5.5, "HClust_Single", 0.35, "HClust_Complete");
+    bunch.Clusterize(20.5, "HClust_Single", 0.35, "HClust_Complete");
     map<int,vector<SingleParticle>> map_of_labels = bunch.GetLabelsMap();
     vector<int> labels = bunch.GetLabelsVector();
     cout << "Num. of clusters: " << map_of_labels.size() << endl;    
@@ -72,7 +72,7 @@ void smash_clusterize(){
         not_nucl->Fill(not_nucleons.at(i).X, not_nucleons.at(i).Y, not_nucleons.at(i).Z);
     }
     not_nucl->SetMarkerColor(kGray);
-    not_nucl->SetMarkerStyle(4);
+    not_nucl->SetMarkerStyle(1);
     not_nucl->Draw("x:y:z");    
        
     for (const auto& [labl, parts]:map_of_labels){
@@ -80,7 +80,7 @@ void smash_clusterize(){
              TNtuple *prot_and_neut = new TNtuple("n", "n", "x:y:z");
              prot_and_neut->Fill(parts.at(0).X, parts.at(0).Y, parts.at(0).Z);
              prot_and_neut->SetMarkerColor(43);
-             prot_and_neut->SetMarkerStyle(4);
+             prot_and_neut->SetMarkerStyle(1);
              prot_and_neut->Draw("x:y:z","","same");
         } else {
             int color = colors[parts.size()];

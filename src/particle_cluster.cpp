@@ -11,28 +11,37 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const double BunchOfParticles::SpaceDist(const SingleParticle& part1, const SingleParticle& part2){
-    const std::vector<double> r1 = {part1.X, part1.Y, part1.Z};
-    const std::vector<double> r2 = {part2.X, part2.Y, part2.Z};
-    const std::vector<double> w = {part1.Vx, part1.Vy, part1.Vz};
-    const std::vector<double> r1_ = CoordinateInNewFrame(r1, w);
-    const std::vector<double> r2_ = CoordinateInNewFrame(r2, w);
-    const auto dX = (r1_.at(0)-r2_.at(0));
-    const auto dY = (r1_.at(1)-r2_.at(1));
-    const auto dZ = (r1_.at(2)-r2_.at(2));
-    return sqrt(dX*dX+dY*dY+dZ*dZ);        
+    const double c = 1.;
+    const std::vector<double> beta = {  (part1.Px+part2.Px)*c/(part1.E+part2.E), 
+                                        (part1.Py+part2.Py)*c/(part1.E+part2.E),
+                                        (part1.Pz+part2.Pz)*c/(part1.E+part2.E)   };
+
+    const std::vector<double> deltaR = {part2.X-part1.X, part2.Y-part1.Y, part2.Z-part1.Z};
+    const std::vector<double> deltaR_ = CoordinateInNewFrame(deltaR, beta);
+    return AbsValue(deltaR_);    
 }
 
 const double BunchOfParticles::VelDist(const SingleParticle& part1, const SingleParticle& part2){
-    const std::vector<double> v1 = {part1.Vx, part1.Vy, part1.Vz};
-    const std::vector<double> v2 = {part2.Vx, part2.Vy, part2.Vz};
-    //const std::vector<double> w = {part1.Vx, part1.Vy, part1.Vz};
-    //const std::vector<double> v1_ = VelocityInNewFrame(v1, v1);
-    const std::vector<double> v1_ = {0,0,0};
-    const std::vector<double> v2_ = VelocityInNewFrame(v2, v1);
+    const double c = 1.;
+    const std::vector<double> beta = {  (part1.Px+part2.Px)*c/(part1.E+part2.E), 
+                                        (part1.Py+part2.Py)*c/(part1.E+part2.E),
+                                        (part1.Pz+part2.Pz)*c/(part1.E+part2.E)   };
+    const std::vector<double> v1 = {    part1.Px*c/part1.E,
+                                        part1.Py*c/part1.E, 
+                                        part1.Pz*c/part1.E  };
+    const std::vector<double> v2 = {    part2.Px*c/part2.E,
+                                        part2.Py*c/part2.E,
+                                        part2.Pz*c/part2.E  };
+                                        
+    //const std::vector<double> v1_ = {0,0,0};
+    //const std::vector<double> v2_ = VelocityInNewFrame(v2, v1);
+    const std::vector<double> v1_ = VelocityInNewFrame(v1, beta);
+    const std::vector<double> v2_ = VelocityInNewFrame(v2, beta);
     const auto dVx = (v1_.at(0)-v2_.at(0));
     const auto dVy = (v1_.at(1)-v2_.at(1));
     const auto dVz = (v1_.at(2)-v2_.at(2));
     return sqrt(dVx*dVx+dVy*dVy+dVz*dVz);
+    return AbsValue(v2_-v1_);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

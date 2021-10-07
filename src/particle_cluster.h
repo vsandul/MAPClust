@@ -15,9 +15,10 @@ struct SingleParticle{
     double X;
     double Y;
     double Z;
-    double Vx;
-    double Vy;
-    double Vz;
+    double Px;
+    double Py;
+    double Pz;
+    double E;
 };
 
 class BunchOfParticles{
